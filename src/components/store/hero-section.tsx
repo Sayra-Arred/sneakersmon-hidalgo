@@ -64,7 +64,7 @@ export function HeroSection() {
       <FloatingElements />
 
       {/* MAIN CONTENT */}
-      <div className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-24 pb-8">
+      <div className="relative z-10 flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-8">
         <div className="text-center w-full max-w-6xl mx-auto">
 
           {/* Badge */}
@@ -130,12 +130,12 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Bouncing bear + sneaker row */}
+          {/* Bouncing bear + sneaker row — 5 on mobile, 9 on desktop */}
           <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 sm:mb-5">
             {BEAR_ROW.map((e, i) => (
               <motion.span
                 key={i}
-                className="text-xl sm:text-2xl md:text-3xl select-none"
+                className={`select-none text-xl sm:text-2xl md:text-3xl ${i >= 5 ? 'hidden sm:inline' : ''}`}
                 animate={{ y: [0, -10, 0], rotate: [0, i % 2 === 0 ? 12 : -12, 0], scale: [1, 1.15, 1] }}
                 transition={{ duration: 1.6 + i * 0.1, delay: i * 0.12, repeat: Infinity, ease: 'easeInOut' }}
               >

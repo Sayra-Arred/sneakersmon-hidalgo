@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter, Inter_Tight, JetBrains_Mono } from 'next/font/google'
 import { SessionProvider } from 'next-auth/react'
 import { Toaster } from 'react-hot-toast'
@@ -23,6 +23,13 @@ const jetbrainsMono = JetBrains_Mono({
   weight: ['400', '500'],
   display: 'swap',
 })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#000000',
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://sneakersmon.mx'),
