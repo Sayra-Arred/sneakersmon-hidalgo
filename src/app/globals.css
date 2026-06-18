@@ -1,11 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 /* ============================================================
    SNEAKERSMON HIDALGO - Design System
    Copyright © 2026 SneakersMon Hidalgo. All Rights Reserved.
    ============================================================ */
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Inter+Tight:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @theme {
   /* Colors */
@@ -92,14 +91,6 @@ body {
 .font-display { font-family: var(--font-display); }
 .font-mono { font-family: var(--font-mono); }
 
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #FF5A1F 0%, #D4AF37 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 /* Glass effect */
 .glass {
   background: rgba(18, 18, 18, 0.8);
@@ -123,6 +114,57 @@ body {
 /* Hide scrollbar utility */
 .no-scrollbar::-webkit-scrollbar { display: none; }
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Bear float keyframe */
+@keyframes bear-float {
+  0%, 100% { transform: translateY(0) rotate(-5deg) scale(1);   opacity: 0.09; }
+  33%       { transform: translateY(-14px) rotate(6deg) scale(1.12); opacity: 0.18; }
+  66%       { transform: translateY(-6px) rotate(-2deg) scale(0.96); opacity: 0.13; }
+}
+
+/* Gradient text shimmer */
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #FF5A1F 0%, #D4AF37 40%, #FF5A1F 80%, #D4AF37 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 5s ease infinite;
+}
+
+/* Section bear+sneaker texture */
+.section-texture {
+  position: relative;
+  overflow: hidden;
+}
+.section-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Ctext x='6' y='44' font-size='28'%3E🐻%3C/text%3E%3Ctext x='50' y='86' font-size='24'%3E👟%3C/text%3E%3C/svg%3E");
+  background-size: 90px 90px;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Pulse glow on accent elements */
+@keyframes accent-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,90,31,0); }
+  50%       { box-shadow: 0 0 24px 4px rgba(255,90,31,0.35); }
+}
+
+/* Text wave */
+@keyframes wave {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {

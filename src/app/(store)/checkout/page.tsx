@@ -9,6 +9,8 @@ import { OrderSummary } from '@/components/checkout/order-summary'
 import { PaymentStripe } from '@/components/checkout/payment-stripe'
 import { PaymentMercadoPago } from '@/components/checkout/payment-mercadopago'
 import { PaymentSpei } from '@/components/checkout/payment-spei'
+import { PaymentOxxo } from '@/components/checkout/payment-oxxo'
+import { PaymentBankTransfer } from '@/components/checkout/payment-bank-transfer'
 import { Button } from '@/components/ui/button'
 import { useCartStore } from '@/store/cart-store'
 import { formatPrice, calculateShipping, cn } from '@/lib/utils'
@@ -33,7 +35,7 @@ interface ContactForm {
   phone: string
 }
 
-type PaymentMethod = 'STRIPE' | 'MERCADOPAGO' | 'SPEI'
+type PaymentMethod = 'STRIPE' | 'MERCADOPAGO' | 'SPEI' | 'OXXO' | 'TRANSFERENCIA'
 
 export default function CheckoutPage() {
   const router = useRouter()
@@ -338,17 +340,19 @@ export default function CheckoutPage() {
                     value={paymentMethod}
                     onValueChange={(v) => setPaymentMethod(v as PaymentMethod)}
                   >
-                    <RadixTabs.List className="flex gap-1 bg-brand-elevated border border-brand-border rounded-xl p-1 mb-6">
+                    <RadixTabs.List className="grid grid-cols-3 sm:grid-cols-5 gap-1 bg-brand-elevated border border-brand-border rounded-xl p-1 mb-6">
                       {[
-                        { value: 'STRIPE', label: 'Tarjeta' },
-                        { value: 'MERCADOPAGO', label: 'Mercado Pago' },
-                        { value: 'SPEI', label: 'SPEI' },
+                        { value: 'STRIPE',        label: '💳 Tarjeta'       },
+                        { value: 'MERCADOPAGO',   label: '🛒 Mercado Pago'  },
+                        { value: 'SPEI',          label: '🏦 SPEI'          },
+                        { value: 'OXXO',          label: '🏪 OXXO'          },
+                        { value: 'TRANSFERENCIA', label: '🔄 Transferencia' },
                       ].map((tab) => (
                         <RadixTabs.Trigger
                           key={tab.value}
                           value={tab.value}
                           className={cn(
-                            'flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all',
+                            'py-2 px-2 rounded-lg text-xs font-semibold transition-all text-center',
                             'data-[state=active]:bg-brand-accent data-[state=active]:text-white',
                             'data-[state=inactive]:text-brand-muted data-[state=inactive]:hover:text-white'
                           )}
@@ -359,23 +363,23 @@ export default function CheckoutPage() {
                     </RadixTabs.List>
 
                     <RadixTabs.Content value="STRIPE">
-                      <p className="text-brand-muted text-sm mb-4">
-                        Completa los datos de tu tarjeta para continuar con el pago.
-                      </p>
+                      <p className="text-brand-muted text-sm mb-2">Pago seguro con tarjeta de crédito o débito.</p>
                       <div className="flex items-center gap-2 text-brand-muted text-xs mb-4">
                         <ChevronRight className="w-3 h-3" />
                         Haz clic en "Realizar pedido" para iniciar el pago con tarjeta
                       </div>
                     </RadixTabs.Content>
                     <RadixTabs.Content value="MERCADOPAGO">
-                      <p className="text-brand-muted text-sm mb-4">
-                        Serás redirigido a MercadoPago para completar tu pago. Acepta múltiples métodos.
-                      </p>
+                      <p className="text-brand-muted text-sm mb-4">Serás redirigido a MercadoPago. Acepta tarjetas, OXXO y más.</p>
                     </RadixTabs.Content>
                     <RadixTabs.Content value="SPEI">
-                      <p className="text-brand-muted text-sm mb-4">
-                        Realiza una transferencia SPEI con los datos que se generarán al crear el pedido.
-                      </p>
+                      <p className="text-brand-muted text-sm mb-4">Transferencia interbancaria SPEI. Datos se generan al crear el pedido.</p>
+                    </RadixTabs.Content>
+                    <RadixTabs.Content value="OXXO">
+                      <p className="text-brand-muted text-sm mb-4">Paga en efectivo en cualquier tienda OXXO del país.</p>
+                    </RadixTabs.Content>
+                    <RadixTabs.Content value="TRANSFERENCIA">
+                      <p className="text-brand-muted text-sm mb-4">Depósito o transferencia directa a nuestra cuenta bancaria.</p>
                     </RadixTabs.Content>
                   </RadixTabs.Root>
                 </>
@@ -392,6 +396,12 @@ export default function CheckoutPage() {
                   )}
                   {paymentMethod === 'SPEI' && (
                     <PaymentSpei orderId={orderId} onPaid={handlePaymentSuccess} />
+                  )}
+                  {paymentMethod === 'OXXO' && (
+                    <PaymentOxxo orderId={orderId} amount={total} />
+                  )}
+                  {paymentMethod === 'TRANSFERENCIA' && (
+                    <PaymentBankTransfer orderId={orderId} amount={total} onPaid={handlePaymentSuccess} />
                   )}
                 </div>
               )}

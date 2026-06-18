@@ -7,6 +7,7 @@ import { BestSellersSection } from '@/components/store/best-sellers-section'
 import { CoverageMapSection } from '@/components/store/coverage-map-section'
 import { ActiveCouponsSection } from '@/components/store/active-coupons-section'
 import { ReviewsSection } from '@/components/store/reviews-section'
+import { StoresSection } from '@/components/store/stores-section'
 import { db } from '@/lib/db'
 
 export const dynamic = 'force-dynamic'
@@ -71,7 +72,9 @@ async function getData() {
 }
 
 export default async function HomePage() {
-  const { drops, newArrivals, bestSellers, coupons } = await getData()
+  const { drops, newArrivals, bestSellers, coupons } = await getData().catch(() => ({
+    drops: [], newArrivals: [], bestSellers: [], coupons: [],
+  }))
   return (
     <>
       <HeroSection />
@@ -79,6 +82,7 @@ export default async function HomePage() {
       <NewArrivalsSection products={newArrivals} />
       <BestSellersSection products={bestSellers} />
       <ActiveCouponsSection coupons={coupons} />
+      <StoresSection />
       <CoverageMapSection />
       <ReviewsSection />
     </>
