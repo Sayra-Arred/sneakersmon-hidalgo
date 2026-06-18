@@ -138,9 +138,9 @@ export function NewArrivalsSection({ products }: { products: RawProduct[] }) {
           )) : (
             // Empty state with bears
             <div className="flex gap-4">
-              {[0,1,2,3].map(i => (
+              {[0,1,2,3,4,5].map(i => (
                 <div key={i} className="flex-shrink-0 w-48 aspect-square bg-brand-elevated rounded-[var(--radius-lg)] border border-brand-border flex flex-col items-center justify-center gap-2">
-                  <motion.span className="text-4xl" animate={{ y: [0,-8,0] }} transition={{ duration: 1.5, delay: i*0.2, repeat: Infinity }}>🐻</motion.span>
+                  <motion.span className="text-4xl" animate={{ y: [0,-8,0] }} transition={{ duration: 1.5, delay: i*0.2, repeat: Infinity }}>{i % 2 === 0 ? '🐻' : '👟'}</motion.span>
                   <span className="text-[11px] text-brand-muted">Próximamente</span>
                 </div>
               ))}
@@ -149,7 +149,7 @@ export function NewArrivalsSection({ products }: { products: RawProduct[] }) {
         </div>
 
         {/* Desktop: grid */}
-        <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 lg:gap-6">
           {cards.length > 0 ? cards.map((p, i) => (
             <motion.div
               key={p.id}
@@ -160,10 +160,10 @@ export function NewArrivalsSection({ products }: { products: RawProduct[] }) {
               <ProductCard product={p} priority={i < 4} />
             </motion.div>
           )) : (
-            [0,1,2,3].map(i => (
+            [0,1,2,3,4,5].map(i => (
               <div key={i} className="aspect-square bg-brand-elevated rounded-[var(--radius-lg)] border border-brand-border flex flex-col items-center justify-center gap-3">
-                <motion.span className="text-5xl" animate={{ y: [0,-10,0], rotate: [0,8,0] }} transition={{ duration: 1.8, delay: i*0.25, repeat: Infinity }}>🐻</motion.span>
-                <motion.span className="text-3xl" animate={{ y: [0,6,0] }} transition={{ duration: 1.5, delay: i*0.2+0.3, repeat: Infinity }}>👟</motion.span>
+                <motion.span className="text-5xl" animate={{ y: [0,-10,0], rotate: [0, i%2===0 ? 8 : -8, 0] }} transition={{ duration: 1.8, delay: i*0.25, repeat: Infinity }}>{i%2===0 ? '🐻' : '👟'}</motion.span>
+                <motion.span className="text-3xl" animate={{ y: [0,6,0] }} transition={{ duration: 1.5, delay: i*0.2+0.3, repeat: Infinity }}>{i%2===0 ? '👟' : '🐻'}</motion.span>
                 <span className="text-xs text-brand-muted tracking-widest">PRÓXIMAMENTE</span>
               </div>
             ))

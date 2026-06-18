@@ -159,8 +159,60 @@ function DropCard({ drop, index }: { drop: Drop; index: number }) {
   )
 }
 
+const PLACEHOLDER_DROPS = [
+  { emoji: '👟', brand: 'NIKE', name: 'Air Max — Edición Especial' },
+  { emoji: '🐻', brand: 'JORDAN', name: 'Retro High OG — Drop Limitado' },
+  { emoji: '👟', brand: 'ADIDAS', name: 'Yeezy 350 — Lanzamiento Próximo' },
+  { emoji: '🐻', brand: 'NEW BALANCE', name: '990v6 — Coming Soon' },
+  { emoji: '👟', brand: 'CONVERSE', name: 'Chuck 70 — Colección 2026' },
+  { emoji: '🐻', brand: 'PUMA', name: 'Speedcat OG — Edición Limitada' },
+]
+
+function PlaceholderDropCard({ item, index }: { item: typeof PLACEHOLDER_DROPS[0]; index: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.1 + index * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="relative bg-brand-elevated border border-brand-border rounded-[var(--radius-xl)] overflow-hidden"
+    >
+      {/* top banner */}
+      <div className="h-2 w-full" style={{ background: 'linear-gradient(90deg, #FF5A1F, #D4AF37)' }} />
+      {/* badge */}
+      <div className="absolute top-4 right-4 px-2 py-1 rounded-full text-[10px] font-black tracking-widest uppercase"
+        style={{ background: 'rgba(255,90,31,0.15)', color: '#FF5A1F', border: '1px solid rgba(255,90,31,0.35)' }}>
+        PRÓXIMAMENTE
+      </div>
+      {/* image area */}
+      <div className="aspect-square flex flex-col items-center justify-center gap-3 px-6"
+        style={{ background: 'linear-gradient(135deg, rgba(255,90,31,0.06) 0%, rgba(212,175,55,0.04) 100%)' }}>
+        <motion.span
+          className="text-6xl sm:text-7xl select-none"
+          animate={{ y: [0, -12, 0], rotate: [0, index % 2 === 0 ? 10 : -10, 0] }}
+          transition={{ duration: 2 + index * 0.3, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          {item.emoji}
+        </motion.span>
+        <span className="text-[10px] font-black tracking-[0.3em] text-brand-muted uppercase">{item.brand}</span>
+      </div>
+      {/* info */}
+      <div className="p-5">
+        <p className="font-display font-black text-white text-sm sm:text-base leading-tight mb-3">{item.name}</p>
+        <div className="flex items-center gap-2 mb-4">
+          <Clock className="w-3.5 h-3.5 text-brand-accent" />
+          <span className="text-xs text-brand-muted tracking-wide">Fecha por anunciar</span>
+        </div>
+        <div className="w-full rounded-lg py-2.5 text-center text-xs font-bold tracking-widest uppercase text-brand-muted border border-brand-border"
+          style={{ background: 'rgba(255,255,255,0.03)' }}>
+          NOTIFICARME
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 export function FeaturedDropsSection({ drops }: FeaturedDropsSectionProps) {
-  if (drops.length === 0) return null
+  const hasDrops = drops.length > 0
 
   return (
     <section className="py-16 sm:py-24 bg-brand-black border-t border-brand-border">
@@ -179,18 +231,24 @@ export function FeaturedDropsSection({ drops }: FeaturedDropsSectionProps) {
         </div>
 
         {/* Grid */}
-        <div
-          className={cn(
+        {hasDrops ? (
+          <div className={cn(
             'grid gap-4 lg:gap-6',
             drops.length === 1 && 'grid-cols-1 max-w-md',
             drops.length === 2 && 'grid-cols-1 sm:grid-cols-2',
             drops.length >= 3 && 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-          )}
-        >
-          {drops.map((drop, i) => (
-            <DropCard key={drop.id} drop={drop} index={i} />
-          ))}
-        </div>
+          )}>
+            {drops.map((drop, i) => (
+              <DropCard key={drop.id} drop={drop} index={i} />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            {PLACEHOLDER_DROPS.map((item, i) => (
+              <PlaceholderDropCard key={i} item={item} index={i} />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )
