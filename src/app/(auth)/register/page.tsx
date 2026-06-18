@@ -1,5 +1,6 @@
 'use client'
 // Copyright © 2026 SneakersMon Hidalgo. All Rights Reserved.
+import { Suspense } from 'react'
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -63,7 +64,7 @@ function PasswordStrengthBar({ password }: { password: string }) {
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-export default function RegisterPage() {
+function RegisterForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') ?? '/'
@@ -259,5 +260,13 @@ export default function RegisterPage() {
         .
       </p>
     </div>
+  )
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="w-full max-w-md h-96 bg-brand-elevated rounded-2xl animate-pulse" />}>
+      <RegisterForm />
+    </Suspense>
   )
 }

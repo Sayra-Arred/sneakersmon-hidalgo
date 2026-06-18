@@ -1,5 +1,6 @@
 'use client'
 // Copyright © 2026 SneakersMon Hidalgo. All Rights Reserved.
+import { Suspense } from 'react'
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -13,7 +14,7 @@ import { Input } from '@/components/ui/input'
 import { loginSchema, type LoginInput } from '@/lib/validations'
 import { cn } from '@/lib/utils'
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') ?? '/'
@@ -57,9 +58,7 @@ export default function LoginPage() {
 
   return (
     <div className="w-full max-w-md">
-      {/* Card */}
       <div className="bg-brand-elevated border border-brand-border rounded-2xl p-8 md:p-10 shadow-[0_24px_80px_rgba(0,0,0,0.8)]">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="font-display font-black text-3xl tracking-tight mb-2">
             Iniciar sesión
@@ -75,7 +74,6 @@ export default function LoginPage() {
           </p>
         </div>
 
-        {/* Google OAuth */}
         <Button
           type="button"
           variant="secondary"
@@ -88,14 +86,12 @@ export default function LoginPage() {
           Continuar con Google
         </Button>
 
-        {/* Divider */}
         <div className="flex items-center gap-3 mb-6">
           <div className="flex-1 h-px bg-brand-border" />
           <span className="text-xs text-brand-muted font-medium">O con correo</span>
           <div className="flex-1 h-px bg-brand-border" />
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-5">
           <Input
             {...register('email')}
@@ -172,5 +168,13 @@ export default function LoginPage() {
         .
       </p>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="w-full max-w-md h-96 bg-brand-elevated rounded-2xl animate-pulse" />}>
+      <LoginForm />
+    </Suspense>
   )
 }
