@@ -16,7 +16,10 @@ export const metadata: Metadata = {
   description: 'Drops exclusivos, ediciones limitadas y entrega directa. La tienda definitiva de sneakers en México.',
 }
 
+const EMPTY = { drops: [], newArrivals: [], bestSellers: [], coupons: [] }
+
 async function getData() {
+  if (!process.env.DATABASE_URL) return EMPTY
   const [drops, newArrivals, bestSellers, coupons] = await Promise.all([
     db.drop.findMany({ where: { status: 'UPCOMING' }, take: 3, orderBy: { releaseDate: 'asc' } }),
     db.product.findMany({
